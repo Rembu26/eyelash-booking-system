@@ -61,6 +61,9 @@ const serviceSchema = new mongoose.Schema({
 // Defines booking/appointment data
 const appointmentSchema = new mongoose.Schema({
 
+    //User reference (foreign key) - who made the appointment
+        UserID: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+
     // Reference to Customer (foreign key)
     CustomerID: { type: mongoose.Schema.Types.ObjectId, ref: 'Customers', required: true },
 
