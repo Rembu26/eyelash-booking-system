@@ -1,0 +1,130 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Slimmer header */
+.header {
+  background: #ff4da6;
+  color: white;
+  padding: 5px;       /* reduced padding */
+  text-align: center;
+  font-size: 20px;     /* smaller font size */
+}
+
+.main-section {
+  flex: 1;
+  background: linear-gradient(to right, #fff0f5, #ffe6f0);
+  padding: 30px 20px;
+  text-align: center;
+}
+.main-section h2 {
+  margin-bottom: 10px;
+}
+
+.main-section p {
+  margin-bottom: 15px;
+}
+
+.buttons {
+  margin-bottom: 25px;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+/* Buttons */
+.buttons {
+  margin-top: 10px;
+  display: flex;
+  gap: 15px;           /* space between buttons */
+  justify-content: center;
+}
+
+.buttons button {
+  padding: 12px 25px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+}
+/* Login button default */
+.login-btn {
+  padding: 12px 25px;
+  border-radius: 10px;
+  border: 2px solid #ff4da6;
+  background: transparent;
+  color:black;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* ONLY login hover */
+.login-btn:hover {
+  background: #ff4da6;
+  color: white;
+}
+
+.secondary {
+  background: white;
+  color: #ff0080;
+}
+
+.card {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 15px;
+  background: white;          /* clean base */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);  /* soft shadow */
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  background: rgba(255, 0, 128, 0.8);
+  color: white;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
+}
+
+.card:hover .overlay {
+  opacity: 1;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  transition: 0.3s;
+}
+
+
+/* Footer fills bottom */
+.footer {
+  background: #222;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+/*Register page Stylings*/

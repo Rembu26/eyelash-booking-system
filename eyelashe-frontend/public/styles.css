@@ -1,0 +1,330 @@
+/* Styling For LandingPage and LashGallery.js files */
+.header {
+  background: #ff4da6;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  font-size: 24px;
+}
+  
+  
+  .hero {
+    height: 60vh;
+    background: url("/images/Lash.jpg") center/cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .buttons button {
+    margin: 10px;
+    padding: 12px 25px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .secondary {
+    background: white;
+    color: #ff0080;
+  }
+  
+  .gallery {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 50px;
+  }
+  
+  .card {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 15px;
+  }
+  
+  .card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Overlay (hidden by default) */
+  .overlay {
+    position: absolute;
+    bottom: 0;
+    background: rgba(255, 0, 128, 0.8);
+    color: white;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+  }
+  
+  /* Show on hover */
+  .card:hover .overlay {
+    opacity: 1;
+  }
+  
+ /* End of Styling For LandingPage and LashGallery.js files */ 
+
+
+
+
+
+
+ /* Styling for Login and Register js files */
+ 
+/* Full page background */
+/*  */
+.login-container {
+  
+  background: linear-gradient(to right, #ff0080, #ff4da6);
+  padding: 100px;
+  
+  width: 400px;
+  margin: 100px auto;
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  justify-content: center;
+   padding-top: 40px;
+} 
+
+/* Heading */
+.login-container h1 {
+  color: black;
+  font-size: 25px;
+  margin-bottom: 90px;
+  margin-top: -40px;
+}
+
+.back-button{
+  margin-top: 50px;   /* space below the h1 */
+  margin-bottom: -90px; /* space above the card */
+  align-self: flex-start; /* align to the left */
+  padding: 10px 15px;
+  border-radius: 25px;
+  border: none;
+  background: #ff4da6;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+ .back-button:hover {
+  background: #ff0080;
+  color: white;
+ }
+/* Glass card */
+.login-card {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 40px 30px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  text-align: center;
+  width: 200px;
+  height: 230px;
+}
+
+/* Eyelash background strip (optional) */
+.login-card::before {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 120px;
+
+  background: url('/images/Wink.jpg') center/cover no-repeat;
+
+  align-items: center;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+
+  opacity: 0.4;
+  z-index: -1;
+ 
+}
+
+/* Inputs */
+.login-card input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  text-align: left;
+  
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Login button */
+.login-card button {
+  margin-top: 15px;
+  padding: 10px 25px;
+  border-radius: 25px;
+  border: none;
+  background: #ff4da6;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-card button:hover {
+  background: #e60073;
+}
+
+
+
+
+/* End of Styling for Login */
+
+/* Start of Styling for Register */
+.register-container {
+  background: linear-gradient(to right, #ff0080, #ff4da6);
+  padding: 100px;
+  width: 400px;
+  
+  margin: 100px auto;
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  justify-content: center;
+   padding-top: 40px;
+}
+.register-card {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 40px 30px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  text-align: center;
+  width: 500px;
+  height: auto;
+  min-height: 300px;
+}
+
+.register-card::before {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 120px;
+
+  background: url('/images/Wink.jpg') center/cover no-repeat;
+
+  align-items: stretch;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+
+  opacity: 0.4;
+  z-index: -1;
+ 
+}
+.register-container h1 {
+  color: black;
+  font-size: 25px;
+  margin-bottom: 90px;
+  margin-top: -40px;
+}
+.register-card input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  text-align: left;
+  
+  background: rgba(255, 255, 255, 0.8);
+}
+.register-card input.input-error {
+  border: 2px solid red;
+  background-color: #ffe6e6;
+}  
+
+.register-card input:focus {
+  outline: none;
+  border: 2px solid #e91e63;
+  box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+}
+
+.register-card button {
+  margin-top: 15px;
+  padding: 10px 25px;
+  border-radius: 25px;
+  border: none;
+  background: #ff4da6;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button[type="submit"] {
+  background: #e91e63;
+  color: white;
+  font-weight: 600;
+}
+
+.register-card button:hover {
+  background: #e60073;
+}
+.back-button{
+  margin-top: 50px;   /* space below the h1 */
+  margin-bottom: -70px; /* space above the card */
+  align-self: flex-start; /* align to the left */
+  padding: 10px 15px;
+  border-radius: 25px;
+  border: none;
+  background: #ff4da6;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+ .back-button:hover {
+  background: #ff0080;
+  color: white;
+ }
+
+ .checkbox-label {
+  display: flex;
+  align-items: flex-start; /* was center - this fixes the float */
+  gap: 10px;
+  margin: 20px 0; /* was 14px all around - now just top/bottom */
+  font-size: 14px;
+  text-align: left;
+  color: #333; /* make sure it’s readable on pink */
+  cursor: pointer;
+  width: 100%;
+}
+
+.checkbox-label input[type="checkbox"] {
+  margin: 0;
+  margin-top: 3px; /* nudge it down to align with first line of text */
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0; /* stops the box from squishing */
+  cursor: pointer;
+  accent-color: #e91e63; /* makes the checkmark pink to match your theme */
+}
+
+ .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.form-row input {
+  width: 90%;
+}
+
+.error-text {
+  font-size: 12px;
+  color: red;
+  font-weight: 500;
+}
