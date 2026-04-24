@@ -1,14 +1,10 @@
 // Import required packages
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const authMiddleware = require('./middleware/authMiddleware');
 const cors = require('cors');
 
-require('dotenv').config();
-
-
-// Import routes
-const authRoutes = require('./routes/authRoutes');
 
 // Create Express app
 const app = express();
@@ -19,27 +15,30 @@ app.use(cors({
     credentials: true
 }));
 
-app.get('/api/protected', authMiddleware, (req, res) => {
-    res.json({"You are authenticated": req.user});
-});
-
 // Middleware (to read JSON data)
 app.use(express.json());
 
-// MongoDB connection string
-const uri = "mongodb+srv://rembuluwanim4_db_user:RMGhLWZfOjVJQC4W@eyelashes-db.f1za9xs.mongodb.net/test?retryWrites=true&w=majority";
 
 // Connect to MongoDB using Mongoose
-mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
+mongoose.connect(process.env.MONGO_URI
+)
 .then(() => {
     console.log("✅ MongoDB connected");
 })
 .catch(err => {
     console.error("❌ Connection error:", err);
 });
+
+
+
+// Import routes
+const authRoutes = require('./routes/authRoutes');
+
+app.get('/api/protected', authMiddleware, (req, res) => {
+    res.json({"You are authenticated": req.user});
+});
+
+
 
 // Use routes
 app.use('/api/auth', authRoutes);

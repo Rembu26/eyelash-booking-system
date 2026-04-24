@@ -4,14 +4,28 @@ const { sendEmail } = require('../mailer');
 const jwt = require('jsonwebtoken');
 const validator = require('validator');
 const Customer = require('../models/Customer');
+const { mongo } = require('mongoose');
 
 // REGISTER FUNCTION
 exports.register = async (req, res) => {
 
-    const { username, email, password,confirmPassword } = req.body;
+    const{
+        
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        password,
+        confirmPassword,
+        preferredServices,
+        notes,
+        consentForMarketing
+
+    }= req.body;
+
 
      // Basic validation
-     if (!username || !email || !password || !confirmPassword) {
+     if (!email|| !password || !confirmPassword) {
         return res.status(400).json({ message: "All fields are required" });
     }
     if (!validator.isEmail(email)) {
@@ -24,49 +38,49 @@ exports.register = async (req, res) => {
         return res.status(400).json({ message: "Passwords do not match" });
     }
 
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     try {
-        const{
-            firstName,
-            lastName,
-            phoneNumber,
-            emailAdress,
-            password,
-            confirmPassword,
-            preferredServices,
-            notes,
-            consentForMarketing
 
-        }= req.body;
-
-
+        //Check if user already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: "Email already exists" });
+        }
 
 
         //hash password with configurable salt rounds (default to 10 if not set in .env)
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create new user
-        const user = new Use.create({
-            email: emailAdress,
+        // Create new user + customer profile in a single transaction to ensure data integrity
+        const user = await User.create([{
+            email,
             password: hashedPassword,
             role: 'customer',
             
-        });
+        }], { session }); // No session for simplicity, but consider using transactions for production
 
         //Create customer profile linked to user
-        const customer = await Customer.create({
+        const [customer] =    await Customer.create([{
             user: user._id, // Link to User model
             FirstName: firstName,
             LastName: lastName,
             PhoneNumber: phoneNumber,
-            EmailAddress: emailAdress,
-            PreferredServices: preferredServices,
-            Notes: notes,
             ConsentForMarketing: consentForMarketing
-        });
+        }], { session });
 
-        //Send email in a separate try-catch to avoid blocking registration if email fails
+        //Link customer profile back to user
+        user.customer = customer._id;
+        await user.save({ session });
+        await session.commitTransaction();
+
+
+
+        //Send email outside transaction so registration doesn't fail if email sending fails. We can retry sending email later if needed.
+
         try {
-            await sendEmail(user.email, `${customer.FirstName}`);
+            await sendEmail(user.email, customer.FirstName);
             console.log("Email sent successfully to ", user.email);
             
         }
@@ -77,20 +91,36 @@ exports.register = async (req, res) => {
 
         //Generate JWT token
         const token = jwt.sign(
-            { id: user._id, role: user.role },
+            { id: user._id,
+             role: user.role,
+             customerId: customer._id }, // Include customerId in token payload for easy access in protected routes
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
 
 
-        res.status(201).json({ message: "Customer registered successfully 🎉!" });
+        res.status(201).json({ 
+            message: "Customer registered successfully 🎉!",
+            token,
+            user: {
+                id: user._id,
+                email: user.email,
+                role: user.role,
+                customerId: customer._id
+            }
+        
+        });
 
     } catch (err) {
         if (err.code === 11000) { // Duplicate key error (username or email already exists)
             return res.status(400).json({ message: "Email already exists" });
         }
         console.error("Registration error: ", err);
-        res.status(500).json({ message:"Error registering user" ,err });
+        res.status(500).json({ message:"Error registering user" });
+     }
+    
+     finally {
+        await session.endSession();
     }
 };
 
