@@ -18,8 +18,7 @@ const sendEmail = async (to, customerName) => {
         subject: "Welcome to Lash Bliss Booking System!", 
         text: `Welcome to Lash Bliss Booking System, ${customerName}! Click here to login: http://localhost:3000/login`,
  
-        html: `
-        <h1>Welcome to Lash Bliss Booking System, ${username}!</h1>
+        html: `<p>Hi ${customerName},</p>
         <p>Thank you for registering with Lash Bliss ✨. We're excited to have you on board!</p>
         <br/>
         <p>Best regards, </br>The Eyelash Booking Team</p>

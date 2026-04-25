@@ -1,8 +1,10 @@
 // Import required packages
 require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const authMiddleware = require('./middleware/authMiddleware');
+app.use('/api/protected',require('./routes/authRoutes'));
 const cors = require('cors');
 
 

@@ -3,7 +3,8 @@ import { useState } from "react";
 import {toast} from "react-toastify";
 
 function Login(){
-    const[username,setUsername] =useState("");
+    const navigate = useNavigate();
+    const[email,setEmail] =useState("");
     const[password,setPassword] =useState("");
 
     const handleLogin = async (e) => {
@@ -14,7 +15,7 @@ function Login(){
                 method:"POST",
                 headers:{"Content-Type":"application/json"},
                 body:JSON.stringify({
-                    username,
+                    email,
                     password,
                 }),
             });
@@ -27,9 +28,9 @@ function Login(){
 
             if(response.ok){
                 toast.success("Login successful 💅!");
-                console.log(data);
-                // Redirect to dashboard or home page
+               
                 localStorage.setItem("token", data.token); // Store token for future use    
+                navigate("/dashboard"); // Redirect to dashboard after successful login
 
                 fetch("http://localhost:3000/api/protected", {
                     headers: {
@@ -63,9 +64,9 @@ function Login(){
                 <form onSubmit={handleLogin}>
                 <input 
                     type="text" 
-                    placeholder="Username" 
-                    value={username} 
-                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Email Address" 
+                    value={email} 
+                    onChange={(e) => setEmail(e.target.value)}
                 />
 
                     <input type="password"
