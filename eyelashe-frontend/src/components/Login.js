@@ -1,53 +1,45 @@
 import React from "react";
 import { useState } from "react";
 import {toast} from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
 
 function Login(){
     const navigate = useNavigate();
     const[email,setEmail] =useState("");
     const[password,setPassword] =useState("");
+    const[error,setError] = useState("");
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setError("");
+      
+        try {
+          const response = await fetch("http://localhost:3000/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
+      
+          const data = await response.json();
+          console.log("Login response:", data); // ← This will show us what backend sends
+      
+          if (response.ok) {
+            toast.success("Login successful 💅!");
+            
+            // Save user data with role
+            localStorage.setItem("user", JSON.stringify(data.user));
+            localStorage.setItem("token", data.token);
 
-        try{
-            const response = await fetch("http://localhost:3000/api/auth/login",{
-                method:"POST",
-                headers:{"Content-Type":"application/json"},
-                body:JSON.stringify({
-                    email,
-                    password,
-                }),
-            });
-
-            console.log("Raw response:", response);
-
-            const data = await response.json();
-
-            console.log("Parsed data:", data);
-
-            if(response.ok){
-                toast.success("Login successful 💅!");
-               
-                localStorage.setItem("token", data.token); // Store token for future use    
-                navigate("/dashboard"); // Redirect to dashboard after successful login
-
-                fetch("http://localhost:3000/api/protected", {
-                    headers: {
-                        Authorization: `Bearer ${data.token}`
-                    }
-            });
-
-            } else {
-                toast.error("Login failed💔: " + data.message);
-            }
+            navigate("/splash"); // Show splash screen first
+      
+          }
+        } 
+        
+        catch (err) {
+          setError("Something went wrong. Please try again.");
         }
-        catch(error){
-            console.error("Error during login:", error);
-            alert("An error occurred. Please try again later.");
-        }
-
-    };
+      };
 
     return(
        

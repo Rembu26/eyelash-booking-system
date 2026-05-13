@@ -1,4 +1,4 @@
-const e = require('cors');
+
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
@@ -10,15 +10,15 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-const sendEmail = async (to, customerName) => {
+const sendEmail = async (to, firstName) => {
    try{
     const info = await transporter.sendMail({
       from:process.env.EMAIL_FROM, // Your verified sender email
         to: to,
         subject: "Welcome to Lash Bliss Booking System!", 
-        text: `Welcome to Lash Bliss Booking System, ${customerName}! Click here to login: http://localhost:3000/login`,
+        text: `Welcome to Lash Bliss Booking System, ${firstName}! Click here to login: http://localhost:3000/login`,
  
-        html: `<p>Hi ${customerName},</p>
+        html: `<p>Hi ${firstName},</p>
         <p>Thank you for registering with Lash Bliss ✨. We're excited to have you on board!</p>
         <br/>
         <p>Best regards, </br>The Eyelash Booking Team</p>

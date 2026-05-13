@@ -11,6 +11,7 @@ function Register() {  // <-- Make sure this line exists
     const [consentForMarketing, setConsentForMarketing] = useState(false);
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
+    const [role, setRole] = useState("customer"); // Default role is customer
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -29,18 +30,27 @@ function Register() {  // <-- Make sure this line exists
 
         setLoading(true);
         try {
+            const payload = {
+                email,
+                password,
+                confirmPassword,
+                FirstName:firstName,
+                LastName:lastName,
+                PhoneNumber:phoneNumber,
+                role:'customer', // Set role to customer for all registrations
+
+            };
+
+            //only add consentForMarketing if role is customer
+            if(role === "customer") {
+                payload.consentForMarketing = consentForMarketing;
+            }
+
+
             const response = await fetch("http://localhost:3000/api/auth/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    email,
-                    password,
-                    confirmPassword,
-                    firstName,
-                    lastName,
-                    phoneNumber,
-                    consentForMarketing
-                }),
+                body: JSON.stringify(payload),// Send the payload as JSON in the request body
             });
 
             const data = await response.json();
