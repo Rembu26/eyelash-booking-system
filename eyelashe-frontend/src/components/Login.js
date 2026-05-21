@@ -33,6 +33,9 @@ function Login(){
 
             navigate("/splash"); // Show splash screen first
       
+          }else{
+            setError(data.message || "Invalid email or password.");
+            toast.error(data.message || "Login failed. Please check your credentials and try again.");
           }
         } 
         
@@ -43,8 +46,7 @@ function Login(){
 
     return(
        
-            
-            <div className="login-container">
+ <div className="login-container">
                 
            
             <button className="back-button" onClick={() => window.location.href = '/'}>← Back</button>
@@ -76,6 +78,9 @@ function Login(){
                <p>New user? <a href="/register">Register your account</a></p>
             </div>
             </div>
+       
+            
+           
         
     );
 }

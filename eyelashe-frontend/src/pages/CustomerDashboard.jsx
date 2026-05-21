@@ -4,7 +4,7 @@ const CustomerDashboard = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     return (
         <div style={{padding: '40px'}}>
-            <h1>Welcome back, {user?.name || 'beauty'}  💅</h1>
+            <h1>Welcome back, {user?.FiesrName || 'beauty'}  💅</h1>
             <p>Customer dashboard coming soon.</p>   
             <button onClick={() =>{
                 localStorage.clear(); // Clear all local storage data

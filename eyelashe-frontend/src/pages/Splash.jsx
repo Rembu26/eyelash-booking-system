@@ -34,8 +34,9 @@ export default function Splash ()  {
 
     return  (
        
-         <div className="splash-content">
-            <img src="/images/Splash.jpg" alt="Welcome to LashFash" className="splash-image" />
+         <div className="splash">
+            <img src="/images/Splash.jpg" alt="Welcome to LashFash" className="splash-logo" />
+            <p className="splash-tagline">Loading...</p>
         </div>
 
        
