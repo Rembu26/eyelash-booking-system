@@ -21,7 +21,9 @@ export default function Splash ()  {
                 navigate('/admin-dashboard');
             } else if (role === "customer") {
                 navigate('/customer-dashboard');
-            } 
+            } else if(role === "staff"){
+                navigate('/staff-dashboard')
+            }
             else {
                 navigate('/login'); // Redirect to login if role is unrecognized
             }
