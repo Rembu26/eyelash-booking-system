@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import{
     LayoutDashboard,
@@ -124,11 +125,11 @@ const stats = [
                 <Users size={20} />
                 <span>Clients</span>
             </a>
+            <Link to="/admin-dashboard/adminSubsystem/AdminServices"  className="sidebar-link">
 
-            <a href="#" className="sidebar-link">
-                <Sparkles size={20} />
+            <Sparkles size={20} />
                 <span>Services</span>
-            </a>
+            </Link>
 
             <a href="#" className="sidebar-link">
                 <UserCog size={20} />

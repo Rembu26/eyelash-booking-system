@@ -36,7 +36,13 @@ const personSchema = new mongoose.Schema(
             type: String,
             trim: true,
             
-        }
+        },
+        //Stylist-specific fields, only filled if rolw === 'stylist'
+        skills:[{type: 
+            mongoose.Schema.Types.ObjectId,ref:
+            'Service'}],
+            bio:String,
+            avatar:String
     },
         {
             timestamps: true, // Automatically add createdAt and updatedAt fields

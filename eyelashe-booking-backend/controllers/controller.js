@@ -33,7 +33,6 @@ exports.register = async (req, res) => {
             console.log('Validation failed: passwords dont match');
             return res.status(400).json({ message: "Passwords do not match" });
         }
-
         
         const existingUser = await Person.findOne({ email });
         if (existingUser) {
@@ -44,10 +43,8 @@ exports.register = async (req, res) => {
         console.log('4. Hashing password...');
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        
-       
-
         console.log('6. Creating person...');
+        
         const person = await Person.create({
             FirstName,
             LastName,

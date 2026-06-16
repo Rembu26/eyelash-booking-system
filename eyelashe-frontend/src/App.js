@@ -1,7 +1,8 @@
 import React from "react";
-import {BrowserRouter as Router,Routes,Route, Navigate } from 'react-router-dom'
-import {ToastContainer} from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import {BrowserRouter as Router,Routes,Route, Navigate } from 'react-router-dom';
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 import LandingPage from "./components/LandingPage";
 import Login from "./components/Login";
@@ -10,7 +11,10 @@ import Splash from "./pages/Splash";
 import AdminDashboard from "./pages/AdminDashboard";
 import StaffDashboard from "./pages/StaffDashboard";
 import CustomerDashboard from "./pages/CustomerDashboard";
+import AddService from "./StaffSubSystem/MyServices"
+import AdminServices from "./adminSubsystem/AdminServices";
 import './styles.css';
+import MyServices from "./StaffSubSystem/MyServices";
 
 
 
@@ -52,7 +56,10 @@ const PublicRoute = ({ children }) => {
 
 function App() {
   return (
+  
+    
     <Router>
+      
 
       <Routes>
 
@@ -92,6 +99,8 @@ function App() {
           </ProtectedRoute>
         } />
 
+        <Route path="/staff-dashboard/StaffSubSystem/MyServices" element={<MyServices />} />
+        <Route path="/admin-dashboard/adminSubsystem/AdminServices" element={<AdminServices/>} />
         <Route path="*" element={<Navigate to="/" />} /> {/* Redirect unknown routes to landing page */}
 
       </Routes>

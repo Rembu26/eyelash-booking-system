@@ -1,0 +1,87 @@
+.booking-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.date-btn {
+  padding: 12px 4px;
+  border: 1px solid #fbcfe8;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.date-btn.active {
+  background: #ec4899;
+  color: white;
+  border-color: #ec4899;
+}
+.date-btn.day { font-size: 12px; }
+.date-btn.num { font-size: 18px; font-weight: 600; }
+
+.time-slots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.time-btn {
+  padding: 14px;
+  border: 1px solid #fbcfe8;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.time-btn.active {
+  background: #ec4899;
+  color: white;
+}
+.time-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.selectors {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #fbcfe8;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.hint {
+  color: #9ca3af;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+ .booking-grid,.selectors {
+    grid-template-columns: 1fr;
+  }
+}

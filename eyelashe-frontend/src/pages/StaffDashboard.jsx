@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { User, Sparkles,LogOut,WalletCards,MessageCircle,Calendar1Icon,UserPlus,Home
+import { User, Sparkles,LogOut,WalletCards,MessageCircle,Calendar1Icon,UserPlus,Home,Eye
 } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import NextUpCard from './NextUpCard';
 import AppointmentList from './AppointmentList'
 import Notes from './Notes'
+import { Link } from "react-router-dom";
 
 const StaffDashboard = () => {
     const userStr = localStorage.getItem("user");
@@ -24,12 +25,12 @@ const StaffDashboard = () => {
 
     const mockApp = [
         {id: 1, time:'10:00 AM',customerId:'c1',client:'Sarah M',service:'Hybrid Refill',status:'confirmed',
-            datetime:'2026-05-27T10:00:00Z'},
+            datetime:'2026-05-28T10:00:00Z'},
         {id:2, time: '11:30 AM',customerId:'c2',client:'Sasha Dlamini',service:'Volume Set',status:'completed',
-            datetime:'2026-05-27T11:30:00Z'
+            datetime:'2026-05-28T11:30:00Z'
         },
         {id:3,time : '15:00 PM',customerId:'c3', client:'Kim Doe', service:"Lash Removal",status:'cancelled',
-            datetime:'2026-05-27T15:00:00Z'
+            datetime:'2026-05-28T15:00:00Z'
         }
     ];
     const mockCustomerAppoint = [
@@ -97,14 +98,22 @@ const handleLogout = () => {
                 </header>
 
                 <aside className={`staff-sidebar ${sidebarOpen? 'open' : 'collapsed'}`}>
+
                     <a href="#" className="staff-nav-link active">
                         <Home/>
                         <span>Home</span>
                     </a>
+
                     <a href="#" className="staff-nav-link">
                         <Calendar1Icon/>
                          <span>My Schedule</span>
                     </a>
+
+                    <Link to="/staff-dashboard/StaffSubSystem/MyServices" className="staff-nav-link"> 
+                    <Eye size={20}/>
+                    <span>My Services</span>
+                    </Link>
+
                     <a href="#" className="staff-nav-link">
                         < UserPlus/>
                          <span>Clients</span>
