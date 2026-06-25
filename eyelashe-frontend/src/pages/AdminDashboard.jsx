@@ -116,17 +116,20 @@ const stats = [
                 <span>Dashboard</span>
             </a>
 
-            <a href="#" className="sidebar-link">
-                <CalendarIcon size={20} />
+            <Link to="/admin-dashboard/adminSubSystem/AdminAppointment" className="sidebar-link">
+            <CalendarIcon size={20} />
                 <span>Appointments</span>
-            </a>
+            </Link>
+                
+            
             
             <a href="#" className="sidebar-link">
                 <Users size={20} />
                 <span>Clients</span>
             </a>
-            <Link to="/admin-dashboard/adminSubsystem/AdminServices"  className="sidebar-link">
 
+            
+            <Link to="/admin-dashboard/adminSubsystem/AdminServices"  className="sidebar-link">
             <Sparkles size={20} />
                 <span>Services</span>
             </Link>

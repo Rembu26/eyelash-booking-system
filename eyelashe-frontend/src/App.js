@@ -13,6 +13,7 @@ import StaffDashboard from "./pages/StaffDashboard";
 import CustomerDashboard from "./pages/CustomerDashboard";
 import AddService from "./StaffSubSystem/MyServices"
 import AdminServices from "./adminSubsystem/AdminServices";
+import AdminAppointment from "./adminSubsystem/AdminAppointment";
 import './styles.css';
 import MyServices from "./StaffSubSystem/MyServices";
 
@@ -101,6 +102,7 @@ function App() {
 
         <Route path="/staff-dashboard/StaffSubSystem/MyServices" element={<MyServices />} />
         <Route path="/admin-dashboard/adminSubsystem/AdminServices" element={<AdminServices/>} />
+        <Route  path="/admin-dashboard/adminSubsystem/AdminAppointment" element={<AdminAppointment/>}/>
         <Route path="*" element={<Navigate to="/" />} /> {/* Redirect unknown routes to landing page */}
 
       </Routes>

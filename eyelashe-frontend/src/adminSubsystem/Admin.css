@@ -1,3 +1,276 @@
+/*========ADMIN APPOINTMENT  STYLING =====*/
+
+/* Page wrapper */
+.admin-appointment-page {
+  padding: 32px;
+  min-height: 100vh;
+  background: #ffdcef;
+}
+
+/* Main card */
+.admin-appointment-card {
+  background: rgba(255,255,255,0.85);
+  border: 1px solid rgb(10,25,47,0.8);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgb(255,107,157,0.15);
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Header */
+
+.admin-appointment-header {
+  background: #0a192f; /* navy bar */
+  padding: 16px 24px; /* space inside bar */
+  margin: -24px -24px 24px -24px; /* stretch to card edges + push content down */
+  border-radius: 16px 16px 0 0; /* round top corners only */
+  display: flex;
+  justify-content: center;
+  position: relative;
+  
+}
+
+.admin-appointment-header h2 {
+  color: #ff6b9d; /* pink text */
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+}
+
+/* New Booking button wrapper + button */
+/* Button row wrapper */
+.appoint-btns {
+  display: flex;
+  justify-content: space-between; /* Back left, New Booking right */
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Back button - now sits on left */
+.btn-admin-appoint-back {
+  background: transparent;
+  border: 1px solid #ccd6f6;
+  color: #8892b0;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-admin-appoint-back:hover {
+  background: rgba(204, 214, 246, 0.1);
+  border-color: #8892b0;
+  color: #0a192f;
+  transform: translateX(-2px);
+}
+
+/* New Booking stays on right */
+.admin-add-btn {
+  background: transparent;
+  border: 1px solid #ff6b9d;
+  color: #ff6b9d;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.admin-add-btn:hover {
+  background: #ff6b9d;
+  color: white;
+  box-shadow: 0 0 20px rgba(255, 107, 157, 0.4);
+}
+/* .admin-add-btn {
+  background: transparent;
+  border: 1px solid #ff6b9d;
+  color: #ff6b9d;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.admin-add-btn:hover {
+  background: #ff6b9d;
+  color: white;
+  box-shadow: 0 0 20px rgba(255, 107, 157, 0.4);
+} */
+
+/* Filters row */
+.admin-appoint-filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.admin-appoint-input {
+  background: rgba(255,255,255,0.9);
+  border: 1px solid rgba(255,107,157);
+  color: #0a192f;
+  padding: 10px 14px;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+  min-width: 180px;
+  transition: border-color 0.2s;
+}
+.admin-appoint-input:hover {
+  border-color: rgba(255,107,157, 0.7); /* pink on hover */
+  cursor: pointer;
+}
+
+.admin-appoint-input:focus {
+  border-color: #ff6b9d;
+  box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.15); /* soft pink glow */
+}
+
+.admin-appoint-input::placeholder {
+  color: #8892b0;
+}
+
+/* Status Tabs */
+.admin-appoint-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.admin-appoint-tab {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #8892b0;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.admin-appoint-tab:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ccd6f6;
+}
+.admin-appoint-tab-active {
+  background: linear-gradient(90deg, #ff6b9d, #ff8fab);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+}
+
+/* Table wrapper for mobile scroll */
+.admin-appoint-table-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+}
+
+/* Table */
+.admin-appoint-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #ccd6f6;
+  min-width: 700px;
+}
+.admin-appoint-table th {
+  text-align: left;
+  padding: 14px 12px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  color: #8892b0;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.admin-appoint-table td {
+  padding: 16px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 14px;
+}
+.admin-appoint-table tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+  transition: background 0.15s;
+}
+
+/* Status badges */
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  text-transform: capitalize;
+  font-weight: 600;
+  display: inline-block;
+}
+.status-pending {
+  background: rgba(255, 193, 7, 0.15);
+  color: #ffc107;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+.status-confirmed {
+  background: rgba(40, 167, 69, 0.15);
+  color: #28a745;
+  border: 1px solid rgba(40, 167, 69, 0.3);
+}
+.status-completed {
+  background: rgba(108, 117, 125, 0.15);
+  color: #6c757d;
+  border: 1px solid rgba(108, 117, 125, 0.3);
+}
+.status-cancelled {
+  background: rgba(220, 53, 69, 0.15);
+  color: #dc3545;
+  border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+/* Action buttons */
+.admin-appoint-btn-small {
+  background: transparent;
+  border: 1px solid #ff6b9d;
+  color: #ff6b9d;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-right: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.admin-appoint-btn-small:hover {
+  background: #ff6b9d;
+  color: white;
+}
+.admin-appoint-btn-danger {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+.admin-appoint-btn-danger:hover {
+  background: #dc3545;
+  color: white;
+}
+
+/* Loading + Empty states */
+.admin-appoint-table-wrapper p {
+  color: #8892b0;
+  text-align: center;
+  padding: 40px 0;
+  font-size: 14px;
+}
+
+
+
+
+
+
+
+
+
+
+/*===========ADMIN SERVICES STYLING======== */
 .admin-service-page {
   min-height: 100vh;
   background: #ffdcef;
@@ -6,11 +279,16 @@
 }
 
 .admin-service-card {
-  background: linear-gradient(135deg, #0f1c2e 0%, #1a2a4a 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 28px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+background: rgba(255,255,255,0.85);
+  border: 1px solid rgb(10,25,47,0.8);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgb(255,107,157,0.15);
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .admin-service-item {
@@ -22,10 +300,7 @@
   transition: all 0.2s;
 }
 
-.admin-service-item:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 107, 157, 0.3);
-}
+
 
 .admin-btn-approve {
   background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
@@ -37,11 +312,24 @@
   cursor: pointer;
 }
 
+.admin-service-header{
+  background: #0a192f; /* navy bar */
+  padding: 12px 24px; /* was 16px → now 12px */
+  margin: -24px -24px 16px -24px; /* was 24px bottom → now 16px */
+  border-radius: 16px 16px 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* center vertically */
+  min-height: 52px; /* forces consistent height */
+  position: relative;
+}
+
 .admin-service-header h2 {
   color: #ff6b9d;
-  font-size: 32px;
+  font-size: 22px; /* was 32px → now 22px */
   font-weight: 700;
-  margin-bottom: 24px;
+  margin: 0; /* remove bottom margin */
+  text-align: center; /* left align looks cleaner in header bar */
 }
 
 .admin-service-actions {
@@ -122,32 +410,57 @@
   gap: 20px;
 }
 
+.admin-service-list p{
+  color: #4a5568;
+}
+
 .admin-service-item {
-  background: #112240;
-  border: 1px solid #233554;
+  background: rgba(10, 25, 47, 0.04); /* subtle navy tint instead of white */
+  border: 1px solid rgba(255, 107, 157, 0.25); /* pink border for visibility */
   border-radius: 16px;
-  padding: 20px;
-  transition: all 0.3s;
+  padding: 18px 20px;
+  margin-bottom: 14px;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(255, 107, 157, 0.06);
+  
 }
 
 .admin-service-item:hover {
   border-color: #ff6b9d;
-  box-shadow: 0 8px 24px rgba(255, 107, 157, 0.2);
+  background: rgba(255, 107, 157, 0.05); /* light pink hover */
+  box-shadow: 0 8px 24px rgba(255, 107, 157, 0.15);
   transform: translateY(-4px);
 }
 
 .admin-service-item h3 {
-  color: #e6f1ff;
+  color: #0a192f; /* navy instead of e6f1ff - readable on white */
   margin-bottom: 12px;
   font-size: 18px;
+  font-weight: 600;
+}
+
+.admin-service-item h3 span {
+  color: #ff6b9d; /* price in pink */
 }
 
 .admin-service-item p {
-  color: #8892b0;
+  color: #4a5568; /* darker grey instead of #8892b0 */
   margin: 6px 0;
   font-size: 14px;
 }
 
+.admin-service-item .label {
+  color: #8892b0;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-service-item .date {
+  color: #ff6b9d;
+  font-size: 12px;
+  font-weight: 500;
+}
 /* Card action buttons */
 .admin-card-actions {
   display: flex;
