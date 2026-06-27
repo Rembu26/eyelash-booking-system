@@ -21,7 +21,7 @@ export default function AdminServices () {
   }
 
   let filter = {}
-  if(tab === 'pending') filter = {approved: false}
+  if(tab === 'pending') filter = {approved: false,active:true}
   if(tab === 'active') filter = {approved: true, active: true}
   if(tab === 'inactive') filter = {active: false}
 

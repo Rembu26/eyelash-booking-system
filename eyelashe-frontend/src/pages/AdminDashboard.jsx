@@ -120,14 +120,11 @@ const stats = [
             <CalendarIcon size={20} />
                 <span>Appointments</span>
             </Link>
-                
-            
-            
-            <a href="#" className="sidebar-link">
-                <Users size={20} />
+               
+            <Link to="/admin-dashboard/adminSubSystem/AdminClients" className="sidebar-link" >
+            <Users size={20} />
                 <span>Clients</span>
-            </a>
-
+            </Link>
             
             <Link to="/admin-dashboard/adminSubsystem/AdminServices"  className="sidebar-link">
             <Sparkles size={20} />

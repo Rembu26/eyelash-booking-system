@@ -3,24 +3,30 @@ import {BrowserRouter as Router,Routes,Route, Navigate } from 'react-router-dom'
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
+//LOGIN && REISTERING PAGES
 import LandingPage from "./components/LandingPage";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Splash from "./pages/Splash";
+
+//ADMIN PAGES
 import AdminDashboard from "./pages/AdminDashboard";
-import StaffDashboard from "./pages/StaffDashboard";
-import CustomerDashboard from "./pages/CustomerDashboard";
-import AddService from "./StaffSubSystem/MyServices"
 import AdminServices from "./adminSubsystem/AdminServices";
 import AdminAppointment from "./adminSubsystem/AdminAppointment";
-import './styles.css';
+import AdminClients from "./adminSubsystem/AdminClients";
+
+//STAFF PAGES 
+import StaffDashboard from "./pages/StaffDashboard";
+import AddService from "./StaffSubSystem/MyServices"
 import MyServices from "./StaffSubSystem/MyServices";
 
 
 
+//CUSTOMER PAGES
+import CustomerDashboard from "./pages/CustomerDashboard";
 
 
+import './styles.css';
 
 //Protected route component to guard dashboard routes
 const ProtectedRoute = ({ children,allowedRoles }) => {
@@ -100,9 +106,17 @@ function App() {
           </ProtectedRoute>
         } />
 
+        //STAFF PAGES
         <Route path="/staff-dashboard/StaffSubSystem/MyServices" element={<MyServices />} />
+        <Route path="/staff-dashboard/StaffSubsystem/AddService" element={<AddService/>}/>
+
+
+        //ADMIN PAGES
         <Route path="/admin-dashboard/adminSubsystem/AdminServices" element={<AdminServices/>} />
         <Route  path="/admin-dashboard/adminSubsystem/AdminAppointment" element={<AdminAppointment/>}/>
+        <Route path="/admin-dashboard/adminSubsystem/AdminClients" element={<AdminClients/>}/>
+
+
         <Route path="*" element={<Navigate to="/" />} /> {/* Redirect unknown routes to landing page */}
 
       </Routes>
