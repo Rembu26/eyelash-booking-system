@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+
 const express = require('express');
 const router = express.Router();
-const protect = require('../middleware/authMiddleware');
+const {protect,isAdmin}= require('../middleware/authMiddleware');
 const {getMe} = require('../controllers/userController');
-const {sendOtp,verifyOtp,upgradeToCustomer,createWalkIn} = require ('../controllers/authController');
+const {sendOtp,verifyOtp,upgradeToCustomer,createWalkIn,sendUpgradeOTP} = require ('../controllers/authController');
 
 
 
@@ -30,7 +30,9 @@ router.post('/verify-otp',verifyOtp)
 router.post('/upgrade',upgradeToCustomer)
 
 //ADmin route to create a walk-in
-router.post('/admin/create-walk-in',createWalkIn)
+router.post('/admin/create-walk-in',protect,isAdmin,createWalkIn)
+
+router.post('/persons/:id/send-upgrade-otp', protect, isAdmin, sendUpgradeOTP);
 
 
 // Export the router

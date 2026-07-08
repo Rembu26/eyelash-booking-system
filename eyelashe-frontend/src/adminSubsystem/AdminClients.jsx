@@ -18,7 +18,13 @@ export default function AdminClients(){
     const [tab,setTab] = useState('all') // all, pending,active,inactive
 
     const [form,setForm] = 
-    useState({name:'',phone:'',email:'',role:'walk-in'});
+    useState({
+      FirstName:'',
+      LastName:'',
+      PhoneNumber:'',
+      email:'',
+      role:'walk-in'
+    });
 
    
   const [editClient,setEditClient] = useState(null);
@@ -71,7 +77,7 @@ export default function AdminClients(){
 
           try{
             const token = localStorage.getItem('token');
-            await axios.patch('http://localhostL3000/api/persons/${id}/toggle-status',{},
+            await axios.patch(`http://localhost:3000/api/persons/${id}/toggle-status`,{},
               {headers:{Authorization: `Bearer ${token}`}}
             );
             // Refresh to update the table immediately
@@ -97,7 +103,15 @@ export default function AdminClients(){
 
 const openEdit = (client) =>{
   setEditClient(client)
-  setForm({...client})
+  // split name back to first/last for the form
+  const [firstName, ...lastParts] = client.name.split(' ');
+  setForm({
+    FirstName: firstName, 
+    LastName: lastParts.join(' '),
+    phone: client.phone,
+    email: client.email,
+    role: client.role // <-- this is the important one
+  })
   setShowModal(true)
 }
 const handleSaveClient = async (e) => {
@@ -115,19 +129,35 @@ const handleSaveClient = async (e) => {
       toast.success('Client upgraded successfully');
     } 
     else if(editClient) {
+
       // CASE 2: EDIT
+  const payload = {
+    FirstName: form.FirstName,
+    LastName:form.LastName,
+    PhoneNumber: form.phone.replace(/\s/g, ''), // remove spaces
+    email: form.email,
+    role: form.role
+  }
       await axios.put(`/api/persons/${editClient.id}`, form, { headers: { Authorization: `Bearer ${token}` } });
     } 
     else {
-      // CASE 1: ADD NEW
-      await axios.post(`/api/persons`, form, { headers: { Authorization: `Bearer ${token}` } });
+      // FIX 2: Full URL + correct payload
+        const payload = {
+          FirstName: form.FirstName,
+          LastName: form.LastName,
+          PhoneNumber: form.PhoneNumber.replace(/\s/g, '')
+        }
+        await axios.post(`http://localhost:3000/api/auth/admin/create-walk-in`, payload, { 
+          headers: { Authorization: `Bearer ${token}` } 
+        });
+        toast.success('Walk-in created');
     }
     
     // reset everything
     setShowModal(false);
     setEditClient(null);
     setUpgradeMode(false);
-    setForm({name: '', phone: '', email: '', role: 'walk-in'});
+    setForm({FirstName: '',LastName:'', PhoneNumber: '', email: '', role: 'walk-in'});
     setUpgradeForm({email: '', password: ''});
     fetchClients();
   } catch (err) {
@@ -282,21 +312,29 @@ return(
         ):(
           // ADD/EDIT MODE 
         <>
-        <label>Name</label>
-        <input required value={form.name} onChange={(e) => setForm({...form, name: e.target.value})} />
+       <label>First Name</label>
+<input required value={form.FirstName} onChange={(e) => setForm({...form, FirstName: e.target.value})} />
 
-        <label>Phone</label>
-        <input required placeholder="071 555 1234" value={form.phone} 
-               onChange={(e) => setForm({...form, phone: formatPhone(e.target.value)})} maxLength={12}/>
+<label>Last Name</label>
+<input required value={form.LastName} onChange={(e) => setForm({...form, LastName: e.target.value})} />
+
+<label>Phone</label>
+<input required placeholder="071 555 1234" value={form.PhoneNumber}
+       onChange={(e) => setForm({...form, PhoneNumber: formatPhone(e.target.value)})} maxLength={12}/>
 
         <label>Email</label>
         <input type="email" value={form.email} onChange={(e) => setForm({...form, email: e.target.value})} />
 
+          {editClient && (
+            <>
+            
         <label>Role</label>
         <select value={form.role} onChange={(e) => setForm({...form, role: e.target.value})}>
           <option value="walk-in">Walk-In</option>
           <option value="customer">Customer</option>
         </select>
+            </>
+          )}
         </>
         )}
        

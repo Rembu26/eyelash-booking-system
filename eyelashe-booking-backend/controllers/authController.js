@@ -1,36 +1,30 @@
-const Person = require('../models/Person')
+const Person = require('../models/Person');
+const { sendWhatsApp } = require('../utils/sendWhatsApp');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
 
 
 exports.sendOtp = async (req,res) => {
     try{
-        const {PhoneNumber} = req.body;
+        const { PhoneNumber } = req.body; // 1. get it from body
+        if(!PhoneNumber) return res.status(400).json({message: 'PhoneNumber required'})
 
-        if(!PhoneNumber){
-            return res.status(400).json({message: 'Phone number is required'})
-        }
-        const person = await 
-        Person.findOne({PhoneNumber,role:'walk-in'});
+        const person = await Person.findOne({PhoneNumber, role: 'walk-in'}); // 2. find person
+        if(!person) return res.status(404).json({message: 'Walk-in not found'})
 
-        if(!person){
-            return res.status(404).json({message: 'Number not found. Please Register instead.'})
-        }
-        if(person.role === 'customer'){
-            return res.status(404).json({message: 'You already have an account. Please Login'});
-        }
         const code = Math.floor(100000 + Math.random()* 900000).toString();
-        person.otpCode=code;
+        person.otpCode = code;
         person.otpExpires = new Date(Date.now()+ 5 * 60 * 1000)
         await person.save();
 
-        
-    // await sendWhatsAppMessage(PhoneNumber, `Your SalonHub code is: ${code}`);
-    console.log(`OTP for ${PhoneNumber}: ${code}`);
+        console.log(`OTP for ${PhoneNumber}: ${code}`);
+        // await sendWhatsApp(PhoneNumber, `Your SalonHub code: ${code}`);
 
-    res.json({ message: 'Code sent via WhatsApp' });
-
+        res.json({ message: 'Code sent via WhatsApp' });
     }catch(err){
          console.error(err);
-    res.status(500).json({ message: 'Server error' });
+         res.status(500).json({ message: 'Server error' });
     }
 }
 
@@ -90,8 +84,6 @@ exports.verifyOtp = async (req,res) => {
     }
 }
 
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
 
 exports.upgradeToCustomer =async (req,res) =>{
     try{
@@ -105,7 +97,7 @@ exports.upgradeToCustomer =async (req,res) =>{
         const person = await 
         Person.findById(tempToken);
         if(!person || person.role !== 'walk-in'){
-            res.status(404).json({message: 'Invalid or expired session'})
+            return res.status(404).json({message: 'Invalid or expired session'})
         }
 
         //2.Check email not token
@@ -177,16 +169,18 @@ exports.createWalkIn = async (req,res) => {
             LastName,
             PhoneNumber,
             role:'walk-in',
-            isWalkIn:true
+            isWalkIn:true,
+            status:'active'
         });
         await newWalkIn.save();
         res.status(201).json({message:'Walk-in customer created sucessfully',
             person:{
                 id:newWalkIn._id,
                 FirstName:newWalkIn.FirstName,
-                 LastNameName:newWalkIn.LastName,
+                 LastName:newWalkIn.LastName,
                   PhoneNumber:newWalkIn.PhoneNumber,
-                  role:newWalkIn.role
+                  role:newWalkIn.role,
+                  status: newWalkIn.status
             }
         });
 
@@ -198,3 +192,24 @@ exports.createWalkIn = async (req,res) => {
         res.status(500).json({message:'Server error'})
     }
 }
+
+exports.sendUpgradeOTP = async(req,res) =>{
+    try{
+        const client = await Person.findById(req.params.id);
+        if(!client) return res.status(404).json({message: 'Client not found'});
+        if(client.role !== 'walk-in') return res.status(400).json({message: 'Only walk-ins can be upgraded'});
+
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        
+        client.otpCode = otp;
+        client.otpExpires = Date.now() + 10 * 60 * 1000;
+        await client.save();
+
+        await sendWhatsApp(client.PhoneNumber, otp);
+
+        res.json({ message: 'OTP sent to WhatsApp' });
+    } catch (err) {
+        res.status(500).json({message: err.message});
+    }
+}
+

@@ -50,7 +50,8 @@ const personSchema = new mongoose.Schema(
             default:'active'
         },
         otpCode:String,
-        otpExpires:Date,
+        otpExpires:Date ,
+        tempToken:String,
 
         //Stylist-specific fields, only filled if role === 'staff'
       // Stylist-specific fields - only for staff

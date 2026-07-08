@@ -53,7 +53,8 @@ const getClients = async (req, res) => {
     try {
         const clients = await Person.find({ 
             role: { $in: ['customer', 'walk-in'] },
-           stats:'active'
+           status:'active'
+
         })
         .select('FirstName LastName PhoneNumber email role status')
         .sort({ createdAt: -1 });

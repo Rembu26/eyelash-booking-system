@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const authMiddleware = require('../middleware/authMiddleware');
+const {protect} = require('../middleware/authMiddleware')
+
 const {
     getMyServices,
     getAllServices,
@@ -13,17 +14,17 @@ const {
 } = require('../controllers/serviceController');
 
 // Staff routes
-router.get('/my', authMiddleware, getMyServices);
-router.post('/', authMiddleware, createService);
+router.get('/my', protect, getMyServices);
+router.post('/', protect, createService);
 
 // Public routes
 router.get('/', getAllServices);
 
 // Admin routes
-router.get('/pending', authMiddleware, getPendingServices);
-router.get('/admin', authMiddleware, getAdminServices);
-router.patch('/:id/approve', authMiddleware, approveService);
-router.patch('/:id/deactivate', authMiddleware, deactivateService);
-router.patch('/:id/activate', authMiddleware, activateService); // fixed missing /
+router.get('/pending', protect, getPendingServices);
+router.get('/admin', protect, getAdminServices);
+router.patch('/:id/approve', protect, approveService);
+router.patch('/:id/deactivate', protect, deactivateService);
+router.patch('/:id/activate', protect, activateService); // fixed missing /
 
 module.exports = router;

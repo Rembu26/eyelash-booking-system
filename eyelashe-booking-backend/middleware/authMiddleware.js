@@ -1,7 +1,11 @@
 const jwt = require('jsonwebtoken');
 const Person = require('../models/Person'); // add this
 
-async function authMiddleware(req, res, next) {
+
+
+const protect = async (req, res, next) => {
+
+    
     const authHeader = req.headers.authorization;
 
     if (!authHeader ||!authHeader.startsWith('Bearer ')) {
@@ -13,19 +17,19 @@ async function authMiddleware(req, res, next) {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        // 1. Pull full user from DB so we have latest role
+        // Pull full user from DB so we have latest role
         const person = await Person.findById(decoded.id).select('-passwordHash -otpCode -otpExpires');
 
         if (!person) {
             return res.status(401).json({ message: 'User not found' });
         }
 
-        // 2. Block walk-ins from protected routes
+        // Block walk-ins from protected routes
         if (person.role === 'walk-in') {
             return res.status(403).json({ message: 'Please complete registration first' });
         }
 
-        req.user = person; // attach full person doc, not just {id, role}
+        req.user = person; // attach full person doc
         next();
     }
     catch (err) {
@@ -33,4 +37,12 @@ async function authMiddleware(req, res, next) {
     }
 }
 
-module.exports = authMiddleware;
+const isAdmin = (req, res, next) => {
+    if (req.user && req.user.role === 'admin') {
+        next();
+    } else {
+        res.status(403).json({ message: 'Not authorized as admin' });
+    }
+}
+
+module.exports = { protect, isAdmin } // <-- THIS IS THE IMPORTANT PART
