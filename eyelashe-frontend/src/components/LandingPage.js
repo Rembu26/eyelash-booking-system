@@ -26,6 +26,9 @@ function LandingPage(){
             
 
              <div className="buttons">
+              {/* <button  onClick={() => navigate()}>
+                
+              </button> */}
                 <button className="login-btn" onClick={() => navigate('/login') }>
                   Login</button>
                 <button className="secondary" onClick={()=> navigate('/register')}

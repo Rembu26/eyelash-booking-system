@@ -1,28 +1,88 @@
 import { useState,useEffect } from "react";
 import {toast} from 'react-toastify';
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 import './Admin.css';
+
 
 
 export default function AdminClients(){
 
 
-    const navigate = useNavigate()
-    const [search,setSearch] = useState('')
-    const [showModal,setShowModal] = useState(false)
-    const [clients,setClients] = 
-    useState([
-         {id:1,name:'Aisha Khan',phone:'0715551234',role:'customer',status:'pending',email:'aisha@gmail.com'},
-         {id:2,name:'Sandra Smith', phone:'0851526325',role:'walk-in',status:'active',email:'sandra@gmail.com'},
-         {id:3,name:'Monica Doe',phone:'0785652201',role:'walk-in',status:'inactive',email:'monica@gmail.com'}
-    ])
+    const navigate = useNavigate();
+    const [search,setSearch] = useState('');
+    const [showModal,setShowModal] = useState(false);
+    const [loading,setLoading] = useState(false);
+    const [clients,setClients] = useState([]);
+
+    const [tab,setTab] = useState('all') // all, pending,active,inactive
 
     const [form,setForm] = 
-    useState({name:'',phone:'',email:'',role:'walk-in'})
+    useState({name:'',phone:'',email:'',role:'walk-in'});
 
    
-  const [editClient,setEditClient] = useState(null)
-    const [deactivateClient,setDeactivateClient] = useState(null);
+  const [editClient,setEditClient] = useState(null);
+  const [deactivateClient,setDeactivateClient] = useState(null);
+
+  const [upgradeMode,setUpgradeMode] = useState(null);
+  const [selectedClient,setSelectedClient] = useState(null)
+  const [upgradeForm,setUpgradeForm] = useState({email:'',password:''});
+
+  const openUpgradeModal = (client) =>{
+    setSelectedClient(client);
+    setUpgradeMode(true);
+    setShowModal(true);
+  }
+
+
+  // Fetch real clients from backend
+   
+        const fetchClients = async () => {
+            setLoading(true);
+            try {
+                const token = localStorage.getItem('token');
+                const res = await axios.get('http://localhost:3000/api/persons/clients', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                
+                
+                // map backend fields to match your table
+                const formatted = res.data.map(c => ({
+                    id: c._id,
+                    name: `${c.FirstName} ${c.LastName}`,
+                    phone: c.PhoneNumber,
+                    email: c.email,
+                    role: c.role,
+                    status: c.status 
+                }));
+                setClients(formatted);
+            } catch (err) {
+                toast.error('Failed to load clients');
+                console.log(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        useEffect(() =>{
+          fetchClients();
+        },[]);
+
+        const handleToggleStatus = async(id) =>{
+
+          try{
+            const token = localStorage.getItem('token');
+            await axios.patch('http://localhostL3000/api/persons/${id}/toggle-status',{},
+              {headers:{Authorization: `Bearer ${token}`}}
+            );
+            // Refresh to update the table immediately
+            fetchClients();
+          }catch(err){
+            console.error('Error toggling status:',err);
+            toast.error('Failed to update client status');
+          }
+        };
+        if(loading)
+          return <p>Loading clients...</p>
 
     const formatPhone = (value) =>{
         //1.strip everything except digits
@@ -33,32 +93,51 @@ export default function AdminClients(){
         if(digits.length <=6) return `${digits.slice(0,3)} ${digits.slice(3)}`
         return `${digits.slice(0,3)} ${digits.slice(3,6)} ${digits.slice(6)}`
     }
+
+
 const openEdit = (client) =>{
   setEditClient(client)
   setForm({...client})
   setShowModal(true)
 }
-
-const handleSaveClient = (e) => {
-  e.preventDefault()
-  if(editClient){
-    //Edit : repkace client
-    setClients(clients.map(c => c.id ===
-      editClient.id ? {...form, id: c.id,
-        status:c.status}:c))
-        toast.success('Client updated')
+const handleSaveClient = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  const token = localStorage.getItem('token');
+  try {
+    if(upgradeMode) {
+      // CASE 3: UPGRADE WALK-IN
+      await axios.patch(
+        `http://localhost:3000/api/persons/${selectedClient.id}/upgrade`,
+        upgradeForm,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      toast.success('Client upgraded successfully');
+    } 
+    else if(editClient) {
+      // CASE 2: EDIT
+      await axios.put(`/api/persons/${editClient.id}`, form, { headers: { Authorization: `Bearer ${token}` } });
+    } 
+    else {
+      // CASE 1: ADD NEW
+      await axios.post(`/api/persons`, form, { headers: { Authorization: `Bearer ${token}` } });
+    }
+    
+    // reset everything
+    setShowModal(false);
+    setEditClient(null);
+    setUpgradeMode(false);
+    setForm({name: '', phone: '', email: '', role: 'walk-in'});
+    setUpgradeForm({email: '', password: ''});
+    fetchClients();
+  } catch (err) {
+    alert(err.response?.data?.error || 'Save failed');
+  } finally {
+    setLoading(false);
   }
-  else{
-    //Add new client 
-    const newClient = {id:
-      Date.now(),...form,status:'pending'}
-      setClients([newClient,...clients])
-      toast.success('Client added')
-  }
-  setForm({name:'',phone:'',email:'',role:'walk-in'})
-  setEditClient(null)
-  setShowModal(false)
 }
+
+    
   const confirmDeactivate = (client) =>{
     setDeactivateClient(client)
   }
@@ -72,12 +151,12 @@ const handleSaveClient = (e) => {
     setDeactivateClient(null)
   }
 
-  const [tab,setTab] = useState('all') // all, pending,active,inactive
+  
 
   const filteredClients = clients.filter (c => (tab === 'all' || c.status == tab)
   && // <-- NET tab Filter
   (c.name.toLowerCase().includes(search.toLowerCase()) ||
-   c.email.toLocaleLowerCase(). includes(search.toLocaleLowerCase()))
+   c.email && c.email.toLocaleLowerCase(). includes(search.toLocaleLowerCase()))
 
   )
 
@@ -135,7 +214,12 @@ return(
 
             </thead>
             <tbody>
-                {filteredClients.map(c=>
+              {loading ? (
+                <tr><td colSpan="6">Loading...</td></tr>
+              ):filteredClients.length === 0 ?(
+                <tr><td colSpan="6" style={{textAlign:'center', padding:'20px'}}>No clients found</td></tr>
+              ):(
+                filteredClients.map(c=>
                     (
                         <tr key={c.id}>
                             <td>{c.name}</td>
@@ -146,10 +230,18 @@ return(
                                <td>
                                 <button className="btn-edit" onClick={() => openEdit(c)}>Edit</button>
                                 <button className="btn-delete" onClick={()=> confirmDeactivate(c)}>{c.status === 'active' ? 'Dectivate':'Activate'}</button>
+                                {c.role === 'walk-in' && (
+                                  <button className="btn-upgrade"
+                                  onClick={() => openUpgradeModal(c)}>
+                                    upgrade
+                                  </button>
+                                )}
                                </td>
                         </tr>
                     )
-                )}
+                )
+              )}
+                
             </tbody>
         </table>
 
@@ -159,10 +251,37 @@ return(
        {/* MODAL */}
       {/* MODAL: Add + Edit */}
 {showModal && (
-  <div className="modal-overlay" onClick={() => {setShowModal(false); setEditClient(null)}}>
+  <div className="modal-overlay" onClick={() => {setShowModal(false); setEditClient(null);setUpgradeMode(false)}}>
     <div className="modal" onClick={(e) => e.stopPropagation()}>
-      <h3>{editClient ? 'Edit Client' : 'Add New Client'}</h3>
+      <h3>
+        {upgradeMode ? `Upgrade ${selectedClient?.name}`: editClient ? 'Edit Client' : 'Add New Client'}
+        </h3>
       <form onSubmit={handleSaveClient}>
+        {upgradeMode ? (
+          <>
+           <p style={{fontSize: '13px', color: '#6b7280', marginBottom: '16px'}}>
+              Set login credentials for this walk-in
+            </p>
+            <label>Email</label>
+            <input 
+              required 
+              type="email" 
+              value={upgradeForm.email} 
+              onChange={(e) => setUpgradeForm({...upgradeForm, email: e.target.value})} 
+            />
+
+            <label>Password</label>
+            <input 
+              required 
+              type="password" 
+              placeholder="Min 8 characters"
+              value={upgradeForm.password} 
+              onChange={(e) => setUpgradeForm({...upgradeForm, password: e.target.value})} 
+            />
+          </>
+        ):(
+          // ADD/EDIT MODE 
+        <>
         <label>Name</label>
         <input required value={form.name} onChange={(e) => setForm({...form, name: e.target.value})} />
 
@@ -178,10 +297,17 @@ return(
           <option value="walk-in">Walk-In</option>
           <option value="customer">Customer</option>
         </select>
+        </>
+        )}
+       
+
+        
 
         <div className="modal-actions">
-          <button type="button" className="btn-cancel" onClick={() => {setShowModal(false); setEditClient(null)}}>Cancel</button>
-          <button type="submit" className="btn-save">Save</button>
+          <button type="button" className="btn-cancel" onClick={() => {setShowModal(false); setEditClient(null);setUpgradeMode(false)}}>Cancel</button>
+          <button type="submit" className="btn-save" disabled={loading}>
+            {loading ? 'Saving...':'Save'}
+          </button>
         </div>
       </form>
     </div>
@@ -205,6 +331,7 @@ return(
     </div>
   </div>
 )}
+
     </div>
     
     )
