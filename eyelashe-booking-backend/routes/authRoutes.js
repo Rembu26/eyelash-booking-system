@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const {protect,isAdmin}= require('../middleware/authMiddleware');
 const {getMe} = require('../controllers/userController');
-const {sendOtp,verifyOtp,upgradeToCustomer,createWalkIn,sendUpgradeOTP} = require ('../controllers/authController');
+const {upgradeToCustomer,createWalkIn} = require ('../controllers/authController');
 
 
 
@@ -20,19 +20,12 @@ router.post('/login', login);
 // Route for getting the authenticated user's information
 router.get('/me', protect, getMe);
 
-//Router for sending the otp via Whatsapp
-router.post('/send-otp',sendOtp)
 
-//Router for verying the OPT sent in Whatsapp
-router.post('/verify-otp',verifyOtp)
-
-//Router for upgrading from walk-in to customer role 
-router.post('/upgrade',upgradeToCustomer)
 
 //ADmin route to create a walk-in
 router.post('/admin/create-walk-in',protect,isAdmin,createWalkIn)
 
-router.post('/persons/:id/send-upgrade-otp', protect, isAdmin, sendUpgradeOTP);
+
 
 
 // Export the router
