@@ -131,15 +131,16 @@ const stats = [
                 <span>Services</span>
             </Link>
 
-            <a href="#" className="sidebar-link">
+            <Link to="/admin-dashboard/adminSubsystem/AdminStaff" className="sidebar-link">
                 <UserCog size={20} />
                 <span>Staff</span>
-            </a>
+            </Link>
 
-            <a href="#" className="sidebar-link">
+
+            <Link to="/admin-dashboard/adminSubsystem/AdminSettings" className="sidebar-link">
                 <Settings size={20} />
                 <span>Settings</span>
-            </a>
+            </Link>
 
             <button onClick={handleLogout} className="logout-btn">
                 <LogOut size={20} />

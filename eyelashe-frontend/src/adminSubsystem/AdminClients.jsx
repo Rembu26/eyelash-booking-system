@@ -186,7 +186,7 @@ export default function AdminClients(){
         await axios.patch(`http://localhost:3000/api/persons/${id}/reactivate`, {}, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        toast.success('Client reactivated');
+        toast.info('Client reactivated');
         fetchClients();
       } catch (err) {
         toast.error(err.response?.data?.message || 'Failed to reactivate');

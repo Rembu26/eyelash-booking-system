@@ -54,8 +54,6 @@ const getClients = async (req, res) => {
     try {
         const clients = await Person.find({ 
             role: { $in: ['customer', 'walk-in'] }
-           
-
         })
         .select('FirstName LastName PhoneNumber email role status')
         .sort({ createdAt: -1 });
@@ -260,6 +258,97 @@ const reactivatePerson = async (req, res) => {
         res.status(500).json({message: 'Server error'});
     }
 }
+ // @desc    Get all staff + admins
+// @route   GET /api/persons/staff
+// @access  Admin
+const getStaff = async (req,res) =>{
+    try{
+        const staff = await Person.find({role: {$in :['staff',"admin"]}}).select('-passwordHash');
+        res.json(staff);
+    }catch(err){
+    console.error(err);
+    res.status(500).json({message:'Server Error'});
+    }
+}
+
+// @desc    Create staff member
+// @route   POST /api/persons/staff
+// @access  Admin
+const createStaff = async (req,res) =>{
+    try{
+        console.log('BODY RECEIVED',req.body)
+        const { FirstName, LastName, email, PhoneNumber, role, password } = req.body;
+        
+        if(!password)
+            return res.status(400).json({message: 'Password is required!'});
+
+        const cleanEmail = email.toLowerCase().trim();
+        const exists = await Person.findOne({ email: cleanEmail });
+        if(exists) return res.status(400).json({message: 'Email already in use'});
+
+        // Check phone too
+        const phoneExists = await Person.findOne({ PhoneNumber });
+        if(phoneExists) return res.status(400).json({message: 'Phone number already in use'});
+        const person = await Person.create({
+            FirstName,
+            LastName,
+            status:'active',
+            email: cleanEmail, 
+            PhoneNumber,
+            role: role || 'staff', // 'staff' or 'admin'
+            passwordHash: await bcrypt.hash(password, 10)
+        });
+        const {passwordHash,...safePerson} = person. _doc;
+
+        res.status(201).json({message: 'Staff created', person: safePerson})
+    }catch(err){
+        console.error("CREATE STAFF ERROR:",err);
+        res.status(500).json({message: 'Server error'})
+    }
+}
+ const deleteStaff = async  (req,res) =>{
+    try{
+        const {id} = req.params;
+        const person = await Person.findById(id);
+
+        if(!person)
+            return res.status(404).json({message: "This staff not found "});
+
+        // Soft delete - don't actually delete from DB
+    person.status = 'inactive'; 
+    await person.save();
+
+    res.json({ 
+      message: `Staff deleted successfully`,
+      status: person.status 
+    });
+    }catch(err){
+        console.error(err);
+        res.status(500).json({message: 'Server error'});
+    }
+ }
+const handleReactive = async(req,res) => {
+    try{
+        const {id} = req.params;
+        const person = await Person.findById(id);
+
+        if(!person)
+            return res.status(404).json({message: "This staff not found "});
+
+        // Soft delete - don't actually delete from DB
+    person.status = 'active'; 
+    await person.save();
+
+    res.json({ 
+      message: `Staff reactivated successfully!`,
+      status: person.status 
+    });
+    }catch(err){
+        console.error(err);
+        res.status(500).json({message: 'Server error'});
+    }
+}
+
 
 module.exports = { 
     getAllPersons,
@@ -268,5 +357,9 @@ module.exports = {
     editPerson,
     deactivatePerson,
     reactivatePerson,
-    upgradeToCustomer
+    upgradeToCustomer,
+    getStaff,
+    createStaff,
+    deleteStaff,
+    handleReactive
 };

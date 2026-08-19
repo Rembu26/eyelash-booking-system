@@ -8,7 +8,12 @@ const {
     upgradeToCustomer,
     editPerson,
     deactivatePerson,
-    reactivatePerson
+    reactivatePerson,
+    createStaff,
+    getStaff,
+    deleteStaff,
+    handleReactive,
+    
     } = require('../controllers/personController');
 
 // Public: Get all persons or filter by role ?role=stylist
@@ -22,8 +27,6 @@ router.get('/clients', getClients);
 
 
 
-
-
 // @route   PUT /api/persons/:id
 // @desc    Edit client details
 router.put('/:id', protect,isAdmin,editPerson);
@@ -34,5 +37,13 @@ router.post('/upgrade',protect,upgradeToCustomer)
 // 2 separate routes now instead of toggle
 router.patch('/:id/deactivate',protect, deactivatePerson); 
 router.patch('/:id/reactivate', protect,reactivatePerson);
+
+//Routes for Staff Maagement
+router.get('/staff',protect,isAdmin,getStaff);
+
+router.post('/newStaff',protect,isAdmin,createStaff);
+
+router.patch('/:id/deleteStaff',protect,deleteStaff);
+router.patch('/:id/reactivate',protect,handleReactive)
 
 module.exports = router;

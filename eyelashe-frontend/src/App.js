@@ -14,6 +14,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminServices from "./adminSubsystem/AdminServices";
 import AdminAppointment from "./adminSubsystem/AdminAppointment";
 import AdminClients from "./adminSubsystem/AdminClients";
+import AdminStaff from "./adminSubsystem/AdminStaff";
+import AdminSettings from "./adminSubsystem/AdminSettings";
 
 //STAFF PAGES 
 import StaffDashboard from "./pages/StaffDashboard";
@@ -115,6 +117,8 @@ function App() {
         <Route path="/admin-dashboard/adminSubsystem/AdminServices" element={<AdminServices/>} />
         <Route  path="/admin-dashboard/adminSubsystem/AdminAppointment" element={<AdminAppointment/>}/>
         <Route path="/admin-dashboard/adminSubsystem/AdminClients" element={<AdminClients/>}/>
+        <Route path="/admin-dashboard/adminSubsystem/AdminStaff" element={<AdminStaff/>} />
+        <Route path="/admin-dashboard/adminSubsystem/AdminSettings" element={<AdminSettings/>}/>
 
 
         <Route path="*" element={<Navigate to="/" />} /> {/* Redirect unknown routes to landing page */}
